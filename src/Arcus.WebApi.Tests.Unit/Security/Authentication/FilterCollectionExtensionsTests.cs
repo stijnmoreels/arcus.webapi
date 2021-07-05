@@ -111,7 +111,7 @@ namespace Arcus.WebApi.Tests.Unit.Security.Authentication
             
             // Act / Assert
             Assert.ThrowsAny<ArgumentException>(() =>
-                filters.AddSharedAccessAuthentication<StubSharedAccessKeyAuthenticationFilter>(implementation: null));
+                filters.AddSharedAccessAuthentication<EmptySharedAccessKeyAuthenticationFilter>(implementation: null));
         }
     }
 }
