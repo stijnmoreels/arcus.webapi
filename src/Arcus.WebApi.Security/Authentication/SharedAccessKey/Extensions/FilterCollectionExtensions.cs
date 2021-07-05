@@ -105,5 +105,24 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             filters.Add(new SharedAccessKeyAuthenticationFilter(headerName: null, queryParameterName: parameterName, secretName, options));
             return filters;
         }
+
+        /// <summary>
+        /// Adds an derived shared access key authentication MVC filter to the given <paramref name="filters"/> that authenticates the incoming HTTP request.
+        /// </summary>
+        /// <typeparam name="TImplementation">The concrete derived shared access key authentication filter type.</typeparam>
+        /// <param name="filters">The current MVC filters of the application.</param>
+        /// <param name="implementation">The derived shared access key authentication filter implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="filters"/> or the <paramref name="implementation"/> is <c>null</c>.</exception>
+        public static FilterCollection AddSharedAccessAuthentication<TImplementation>(
+            this FilterCollection filters,
+            TImplementation implementation)
+            where TImplementation : SharedAccessKeyAuthenticationFilter
+        {
+            Guard.NotNull(filters, nameof(filters), "Requires a set of MVC filters to add the shared access authentication MVC filter");
+            Guard.NotNull(implementation, nameof(implementation), "Requires an derived implementation of the shared access key implementation authentication MVC filter");
+
+            filters.Add(implementation);
+            return filters;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Arcus.WebApi.Tests.Core.Security.Authentication;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Xunit;
 
@@ -100,6 +101,17 @@ namespace Arcus.WebApi.Tests.Unit.Security.Authentication
             // Act / Assert
             Assert.ThrowsAny<ArgumentException>(() =>
                 filters.AddSharedAccessAuthenticationOnQuery("x-api-key", secretName, options => options.EmitSecurityEvents = true));
+        }
+
+        [Fact]
+        public void AddSharedAccessKeyAuthentication_WithoutImplementation_Fails()
+        {
+            // Arrange
+            var filters = new FilterCollection();
+            
+            // Act / Assert
+            Assert.ThrowsAny<ArgumentException>(() =>
+                filters.AddSharedAccessAuthentication<StubSharedAccessKeyAuthenticationFilter>(implementation: null));
         }
     }
 }

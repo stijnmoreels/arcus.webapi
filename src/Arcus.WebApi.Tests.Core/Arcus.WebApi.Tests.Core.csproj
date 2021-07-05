@@ -6,4 +6,8 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Arcus.WebApi.Security\Arcus.WebApi.Security.csproj" />
+  </ItemGroup>
+
 </Project>

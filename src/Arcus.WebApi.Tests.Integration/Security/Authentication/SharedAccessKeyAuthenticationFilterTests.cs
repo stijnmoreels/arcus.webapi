@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Arcus.Testing.Logging;
-using Arcus.WebApi.Security.Authentication.SharedAccessKey;
+using Arcus.WebApi.Tests.Core.Security.Authentication;
 using Arcus.WebApi.Tests.Integration.Controllers;
 using Arcus.WebApi.Tests.Integration.Fixture;
 using Arcus.WebApi.Tests.Integration.Logging.Fixture;
@@ -51,6 +51,26 @@ namespace Arcus.WebApi.Tests.Integration.Security.Authentication
             {
                 var request = HttpRequestBuilder.Get(route);
              
+                // Act
+                using (HttpResponseMessage response = await server.SendAsync(request))
+                {
+                    // Assert
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task SharedAccessKeyAuthorizeRoute_WithCustomNoImplementation_SkipsAuthentication()
+        {
+            // Arrange
+            var options = new TestApiServerOptions()
+                .ConfigureServices(services => services.AddMvc(opt => opt.Filters.AddSharedAccessAuthentication(new EmptySharedAccessKeyAuthenticationFilter())));
+
+            await using (var server = await TestApiServer.StartNewAsync(options, _logger))
+            {
+                var request = HttpRequestBuilder.Get(HealthController.GetRoute);
+                
                 // Act
                 using (HttpResponseMessage response = await server.SendAsync(request))
                 {
